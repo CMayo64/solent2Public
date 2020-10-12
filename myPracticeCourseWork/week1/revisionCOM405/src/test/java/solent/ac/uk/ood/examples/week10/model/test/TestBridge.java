@@ -11,15 +11,14 @@ import solent.ac.uk.ood.examples.week10.model.Bridge;
 import solent.ac.uk.ood.examples.week10.model.Car;
 import solent.ac.uk.ood.examples.week10.model.Lorry;
 
-/**
- *
- * @author gallenc
- */
 public class TestBridge {
 
     @Test
-    public void test1() {
-        
+    public void testAdd20PlusCars() {
+        Bridge bridge = new Bridge();
+        for (int i = 0; i < 20; i++) {
+            
+        }
     }
 
   

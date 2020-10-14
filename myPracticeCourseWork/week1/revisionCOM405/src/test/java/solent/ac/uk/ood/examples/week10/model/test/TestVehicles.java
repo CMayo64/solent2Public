@@ -21,9 +21,9 @@ public class TestVehicles {
        double bike_test = 1800.00;
        Vehicle bike = new Motorbike();
        bike.setWeight(bike_test);
-       double price = bike.calculateFee();
-       System.out.println("bike weight=" + bike_test + " price=" + price);
-       assertEquals(3.00, price, 0);
+       double fee = bike.calculateFee();
+       System.out.println("bike weight=" + bike_test + " fee=" + fee);
+       assertEquals(3.00, fee, 0);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class TestVehicles {
         car.setWeight(car_test3);
         double fee = car.calculateFee();
         System.out.println("car weight=" + car_test3 + " fee=" + fee);
-        assertEquals(5.20, price, 0);
+        assertEquals(5.20, fee, 0);
     }
     
     @Test
@@ -68,10 +68,11 @@ public class TestVehicles {
     
     @Test
     public void lorryTest2() {
-        double lorry_test2 = 9006;
+        double lorry_test2 = 9005;
         Vehicle lorry = new Lorry();
         lorry.setWeight(lorry_test2);
-        double price = lorry.calculateFee();
+        double fee = lorry.calculateFee();
         System.out.println("lorry weight=" + lorry_test2 + " fee=" + fee);
         assertEquals(15.00, fee, 0);
     }
+}

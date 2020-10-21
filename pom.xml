@@ -33,6 +33,10 @@
         <module>workup/week2/mavenproject1</module>
         <module>workup/webfacadeexample1</module>
         <module>workup/mavenproject1</module>
+<<<<<<< HEAD
         <module>myPracticeCourseWork/week1/MyPracticeCoursework/maven1</module>
+=======
+        <module>week2/mavenproject1</module>
+>>>>>>> upstream/master
     </modules>
 </project>

@@ -12,21 +12,30 @@ public class DAOFactoryJPAImpl implements DAOFactory {
     private static final String PERSISTENCE_UNIT_NAME = "modelPersistence";
     private static EntityManagerFactory factory;
     private static EntityManager em;
-    private static PersonDAO personDAO;
-    private static AppointmentDAO appointmentDAO;
+    private static PersonDAO personDao;
+    private static AppointmentDAO appointmentDao;
 
     static {
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         em = factory.createEntityManager();
 
         // note it is important that all DAO's share same entity manafer
-        personDAO = new PersonDAOJpaImpl(em);
+        personDao = new PersonDAOJpaImpl(em);
         appointmentDAO = new AppointmentDAOJpaImpl(em);
     }
 
     @Override
     public PersonDAO getPersonDAO() {
-        return personDAO;
+        if (personDao == null {
+            synchronized (this) {
+                if (personDao == null){
+                    try {
+                        factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+                        em = factory.createEntityManager();
+                        personDao = newPersonDaoJpaImpl(em);
+                    }
+                }
+        })
     }
 
     @Override

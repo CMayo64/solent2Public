@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package solent.ac.uk.ood.examples.exam.web.rest.client;
 
 import solent.ac.uk.ood.examples.exam.model.Book;
@@ -17,23 +12,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.filter.LoggingFilter;
 
-/**
- * This class implements the RestInterface as a ReST client which interacts with ExampleProjectRestImpl
- *
- * @author cgallen
- */
 public class RestClientJerseyImpl implements RestInterface {
 
     private WebTarget target;
     private MediaType mediaType = null;
 
-    /**
-     * @param baseUrl the url which will be targeted for the rest api e.g. "http://localhost:8080"
-     * @param mediaType the messages expected either MediaType.APPLICATION_JSON_TYPE or MediaType.APPLICATION_XML_TYPE
-     */
     public RestClientJerseyImpl(String baseUrl, MediaType mediaType) {
         Client client = ClientBuilder.newClient();
-        client.register(new LoggingFilter()); // this logs the generated requestss
+        // This logs the requests that were generated.
+        client.register(new LoggingFilter()); 
         target = client.target(baseUrl).path("rest/example");
         this.mediaType = mediaType;
     }
@@ -48,15 +35,15 @@ public class RestClientJerseyImpl implements RestInterface {
             Invocation.Builder builder = target.path("/retrievematching").request(mediaType);
             response = builder.post(javax.ws.rs.client.Entity.entity(bookTempate, mediaType));
 
-            // read reply message
+            // This is where it reads the reply message.
             replyMessage = response.readEntity(ReplyMessage.class);
-            // get error message if available
+            // This is where it gets the error message if it is available.
             if (response.getStatus() != 200) {
                 String errorMessage = (replyMessage == null) ? "no remote error message" : replyMessage.getDebugMessage();
                 throw new RuntimeException("response status:" + response.getStatus() + " remote error message: " + errorMessage);
             }
 
-            // responded with an OK message now check actually have a value
+            // This says it responded with an OK message and now checks that it actually has a value stored.
             if (replyMessage == null) {
                 throw new RuntimeException("response status:" + response.getStatus() + " but no restMessage body ");
             }
@@ -80,13 +67,13 @@ public class RestClientJerseyImpl implements RestInterface {
 
             replyMessage = response.readEntity(ReplyMessage.class);
 
-            // get error message if available
+            // This gets an error message if it is available.
             if (response.getStatus() != 200) {
                 String errorMessage = (replyMessage == null) ? "no remote error message" : replyMessage.getDebugMessage();
                 throw new RuntimeException("response status:" + response.getStatus() + " remote error message: " + errorMessage);
             }
 
-            // responded with an OK message now check actually have a value
+            // This says it responded with an OK message and now checks it actually has a value stored.
             if (replyMessage == null) {
                 throw new RuntimeException("response status:" + response.getStatus() + " but no restMessage body ");
             }

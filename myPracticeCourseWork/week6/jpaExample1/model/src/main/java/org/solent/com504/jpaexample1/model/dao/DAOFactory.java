@@ -21,7 +21,7 @@ public class DAOFactoryJPAImpl implements DAOFactory {
 
         // note it is important that all DAO's share same entity manafer
         personDao = new PersonDAOJpaImpl(em);
-        appointmentDAO = new AppointmentDAOJpaImpl(em);
+        appointmentDao = new AppointmentDAOJpaImpl(em);
     }
 
     @Override

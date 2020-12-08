@@ -42,7 +42,7 @@
       <Constructors/>
       <Methods/>
     </Class>
-    <Class name="PriceBand" package="org.solent.com528.project.model.dto" visibility="public" xPosition="1373.0" yPosition="1072.0">
+    <Class name="PriceBand" package="org.solent.com528.project.model.dto" visibility="public" xPosition="1343.0" yPosition="1171.0">
       <Fields>
         <Field name="hour" type="Integer" visibility="private"/>
         <Field name="minutes" type="Integer" visibility="private"/>
@@ -53,7 +53,7 @@
         <Method name="getTimeInMinutes" returnType="Integer" visibility="public"/>
       </Methods>
     </Class>
-    <Class name="PricingDetails" package="org.solent.com528.project.model.dto" visibility="public" xPosition="1554.0" yPosition="895.0">
+    <Class name="PricingDetails" package="org.solent.com528.project.model.dto" visibility="public" xPosition="1567.0" yPosition="975.0">
       <Fields>
         <Field name="peakPricePerZone" type="Double" visibility="private"/>
         <Field name="offpeakPricePerZone" type="Double" visibility="private"/>
@@ -68,6 +68,7 @@
         <Field name="stationName" type="String" visibility="private"/>
         <Field name="stationList" type="List&lt;Station&gt;" visibility="private"/>
         <Field name="pricingDetails" type="PricingDetails" visibility="private"/>
+        <Field name="stationZone" type="Integer" visibility="private"/>
       </Fields>
       <Constructors/>
       <Methods/>
@@ -84,11 +85,19 @@
         </Method>
       </Methods>
     </Class>
+    <Class name="StationsList" package="org.solent.com528.project.model.dto" visibility="public" xPosition="1296.0" yPosition="1023.0">
+      <Fields>
+        <Field name="stationList" type="List&lt;Station&gt;" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods/>
+    </Class>
     <Interface name="DAOFactory" package="org.solent.com528.project.model.dao" visibility="public" xPosition="1114.0" yPosition="404.0">
       <Methods>
         <Method name="getTicketMachineDAO" returnType="TicketMachineDAO" visibility="public"/>
         <Method name="getStationDAO" returnType="StationDAO" visibility="public"/>
         <Method name="shutDown" returnType="void" visibility="public"/>
+        <Method name="getPriceCalculatorDAO" returnType="PriceCalculatorDAO" visibility="public"/>
       </Methods>
     </Interface>
     <Interface name="ServiceFacade" package="org.solent.com528.project.model.service" visibility="public" xPosition="316.0" yPosition="323.0">
@@ -118,7 +127,7 @@
     </Interface>
     <Interface name="ServiceFacadeRest" package="org.solent.com528.project.model.rest" visibility="public" xPosition="119.0" yPosition="121.0">
       <Methods>
-        <Method name="getTicketMachineConfig" returnType="String" visibility="public">
+        <Method name="getTicketMachineConfig" returnType="ReplyMessage" visibility="public">
           <Argument type="String" name="ticketMachineUuid"/>
         </Method>
       </Methods>
@@ -143,6 +152,14 @@
         </Method>
         <Method name="deletePriceBand" returnType="PriceBand" visibility="public">
           <Argument type="PriceBand" name="priceBand"/>
+        </Method>
+        <Method name="getOffpeakPricePerZone" returnType="Double" visibility="public"/>
+        <Method name="setOffpeakPricePerZone" returnType="Double" visibility="public">
+          <Argument type="Double" name="offpeakPricePerZone"/>
+        </Method>
+        <Method name="getPeakPricePerZone" returnType="Double" visibility="public"/>
+        <Method name="setPeakPricePerZone" returnType="Double" visibility="public">
+          <Argument type="Double" name="peakPricePerZone"/>
         </Method>
       </Methods>
     </Interface>
@@ -194,9 +211,12 @@
         <Method name="findByTicketMachineUuid" returnType="String" visibility="public">
           <Argument type="String" name="ticketMachineUUID"/>
         </Method>
+        <Method name="saveAll" returnType="List&lt;Station&gt;" visibility="public">
+          <Argument type="List&lt;Station&gt;" name="stationList"/>
+        </Method>
       </Methods>
     </Interface>
-    <Enum name="Rate" package="org.solent.com528.project.model.dto" visibility="public" xPosition="1650.0" yPosition="1096.0">
+    <Enum name="Rate" package="org.solent.com528.project.model.dto" visibility="public" xPosition="1662.0" yPosition="1171.0">
       <Literals>
         <Literal name="PEAK"/>
         <Literal name="OFFPEAK"/>
@@ -204,27 +224,29 @@
     </Enum>
   </ClassDiagramComponents>
   <ClassDiagramRelations>
-    <UseRelation name="useDAO" source="org.solent.com528.project.model.service.ServiceFacade" target="org.solent.com528.project.model.dao.StationDAO" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="usePricingList" source="org.solent.com528.project.model.dao.PriceCalculatorDAO" target="org.solent.com528.project.model.dto.PricingDetails" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="usesWebobjectFactory" source="org.solent.com528.project.model.rest.ServiceFacadeRest" target="org.solent.com528.project.model.web.WebObjectFactory" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="usesTicketMachineConfig" source="org.solent.com528.project.model.service.ServiceFacade" target="org.solent.com528.project.model.dto.TicketMachineConfig" sourceCardinality="1..1" targetCardinality="0..*"/>
-    <UseRelation name="createsServiceFacade" source="org.solent.com528.project.model.service.ServiceObjectFactory" target="org.solent.com528.project.model.service.ServiceFacade" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="useDAO" source="org.solent.com528.project.model.service.ServiceFacade" target="org.solent.com528.project.model.dao.TicketMachineDAO" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="uses" source="org.solent.com528.project.model.rest.RestClient" target="org.solent.com528.project.model.rest.ServiceFacadeRest" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="usesBand" source="org.solent.com528.project.model.dto.Ticket" target="org.solent.com528.project.model.dto.Rate" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="usesWebObjectFactory" source="org.solent.com528.project.model.web.JSP_Pages_do_not_generate" target="org.solent.com528.project.model.web.WebObjectFactory" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="usesServiceFacade" source="org.solent.com528.project.model.rest.ServiceFacadeRest" target="org.solent.com528.project.model.service.ServiceFacade" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="usePriceBand" source="org.solent.com528.project.model.dto.PricingDetails" target="org.solent.com528.project.model.dto.PriceBand" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation name="hasTicketMachines" source="org.solent.com528.project.model.dto.Station" target="org.solent.com528.project.model.dto.TicketMachine" sourceCardinality="1..1" targetCardinality="0..*"/>
     <UseRelation name="createsDAO" source="org.solent.com528.project.model.dao.DAOFactory" target="org.solent.com528.project.model.dao.StationDAO" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="useDAO" source="org.solent.com528.project.model.service.ServiceFacade" target="org.solent.com528.project.model.dao.StationDAO" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="usePricingList" source="org.solent.com528.project.model.dao.PriceCalculatorDAO" target="org.solent.com528.project.model.dto.PricingDetails" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="createDAO" source="org.solent.com528.project.model.dao.DAOFactory" target="org.solent.com528.project.model.dao.TicketMachineDAO" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="usesTicketMachineConfig" source="org.solent.com528.project.model.service.ServiceFacade" target="org.solent.com528.project.model.dto.TicketMachineConfig" sourceCardinality="1..1" targetCardinality="0..*"/>
+    <UseRelation name="useStation" source="org.solent.com528.project.model.dao.StationDAO" target="org.solent.com528.project.model.dto.Station" sourceCardinality="1..1" targetCardinality="0..*"/>
+    <UseRelation name="usesWebobjectFactory" source="org.solent.com528.project.model.rest.ServiceFacadeRest" target="org.solent.com528.project.model.web.WebObjectFactory" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="usesServiceFacade" source="org.solent.com528.project.model.web.JSP_Pages_do_not_generate" target="org.solent.com528.project.model.service.ServiceFacade" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="usesStation" source="org.solent.com528.project.model.dto.StationsList" target="org.solent.com528.project.model.dto.Station" sourceCardinality="1..1" targetCardinality="0..*"/>
+    <UseRelation name="useTicketMachine" source="org.solent.com528.project.model.dao.TicketMachineDAO" target="org.solent.com528.project.model.dto.TicketMachine" sourceCardinality="1..1" targetCardinality="0..*"/>
+    <UseRelation name="usesWebObjectFactory" source="org.solent.com528.project.model.web.JSP_Pages_do_not_generate" target="org.solent.com528.project.model.web.WebObjectFactory" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="createsServiceFacade" source="org.solent.com528.project.model.service.ServiceObjectFactory" target="org.solent.com528.project.model.service.ServiceFacade" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="usesServiceFacade" source="org.solent.com528.project.model.rest.ServiceFacadeRest" target="org.solent.com528.project.model.service.ServiceFacade" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="uses" source="org.solent.com528.project.model.rest.RestClient" target="org.solent.com528.project.model.rest.ServiceFacadeRest" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="useDAO" source="org.solent.com528.project.model.service.ServiceFacade" target="org.solent.com528.project.model.dao.TicketMachineDAO" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="createDAO" source="org.solent.com528.project.model.dao.DAOFactory" target="org.solent.com528.project.model.dao.PriceCalculatorDAO" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="usesServiceObjectFactory" source="org.solent.com528.project.model.web.WebObjectFactory" target="org.solent.com528.project.model.service.ServiceObjectFactory" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation name="useDAO" source="org.solent.com528.project.model.service.ServiceFacade" target="org.solent.com528.project.model.dao.PriceCalculatorDAO" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation name="useBand" source="org.solent.com528.project.model.dto.PriceBand" target="org.solent.com528.project.model.dto.Rate" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="usesServiceObjectFactory" source="org.solent.com528.project.model.web.WebObjectFactory" target="org.solent.com528.project.model.service.ServiceObjectFactory" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="usesServiceFacade" source="org.solent.com528.project.model.web.JSP_Pages_do_not_generate" target="org.solent.com528.project.model.service.ServiceFacade" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="createDAO" source="org.solent.com528.project.model.dao.DAOFactory" target="org.solent.com528.project.model.dao.TicketMachineDAO" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="restInteraceUsesReplyMessage" source="org.solent.com528.project.model.rest.ServiceFacadeRest" target="org.solent.com528.project.model.dto.ReplyMessage" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="useStation" source="org.solent.com528.project.model.dao.StationDAO" target="org.solent.com528.project.model.dto.Station" sourceCardinality="1..1" targetCardinality="0..*"/>
-    <UseRelation name="usePriceBand" source="org.solent.com528.project.model.dto.PricingDetails" target="org.solent.com528.project.model.dto.PriceBand" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation name="useTicketMachine" source="org.solent.com528.project.model.dao.TicketMachineDAO" target="org.solent.com528.project.model.dto.TicketMachine" sourceCardinality="1..1" targetCardinality="0..*"/>
+    <UseRelation name="usesBand" source="org.solent.com528.project.model.dto.Ticket" target="org.solent.com528.project.model.dto.Rate" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation name="usesDAOFactory" source="org.solent.com528.project.model.service.ServiceObjectFactory" target="org.solent.com528.project.model.dao.DAOFactory" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="restInteraceUsesReplyMessage" source="org.solent.com528.project.model.rest.ServiceFacadeRest" target="org.solent.com528.project.model.dto.ReplyMessage" sourceCardinality="1..1" targetCardinality="1..1"/>
   </ClassDiagramRelations>
 </ClassDiagram>
